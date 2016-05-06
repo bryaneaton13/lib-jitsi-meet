@@ -542,10 +542,13 @@ var RTCUtils = {
                     // for the id of MediaStream. Let's just say that a number
                     // contains no special characters.
                     var id = stream.id;
-                    return
+                    // XXX The return statement is affected by automatic
+                    // semicolon insertion (ASI). No line terminator is allowed
+                    // between the return keyword and the expression.
+                    return (
                         (typeof id === 'number')
                             ? id
-                            : SDPUtil.filter_special_chars(id);
+                            : SDPUtil.filter_special_chars(id));
                 };
                 this.getVideoSrc = function (element) {
                     if (!element)
