@@ -536,7 +536,8 @@ var RTCUtils = {
                 };
                 this.getStreamID = function (stream) {
                     // A. MediaStreams from FF endpoints have the characters '{'
-                    // and '}' that make jQuery choke.
+                    // and '}' that make jQuery choke. (By the way,
+                    // RTCBrowserType.isFirefox() is false here.)
                     // B. The react-native-webrtc implementation that we use on
                     // React Native at the time of this writing return a number
                     // for the id of MediaStream. Let's just say that a number

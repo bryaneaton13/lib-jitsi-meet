@@ -4,7 +4,10 @@
  */
 var JitsiConferenceEvents = {
     /**
-     * A new media track was added to the conference.
+     * A new media track was added to the conference. The event provides the
+     following parameters to its listeners:
+     *
+     * @param {JitsiTrack} track the added JitsiTrack
      */
     TRACK_ADDED: "conference.trackAdded",
     /**
