@@ -551,16 +551,11 @@ var RTCUtils = {
                             : SDPUtil.filter_special_chars(id));
                 };
                 this.getVideoSrc = function (element) {
-                    if (!element)
-                        return null;
-                    return element.getAttribute("src");
+                    return element ? element.getAttribute("src") : null;
                 };
                 this.setVideoSrc = function (element, src) {
-                    if (!src) {
-                        src = '';
-                    }
                     if (element)
-                        element.setAttribute("src", src);
+                        element.setAttribute("src", src || '');
                 };
                 // DTLS should now be enabled by default but..
                 this.pc_constraints = {'optional': [

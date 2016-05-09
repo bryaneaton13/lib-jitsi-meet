@@ -225,8 +225,7 @@ JitsiTrack.prototype.dispose = function () {
  * Returns true if this is a video track and the source of the video is a
  * screen capture as opposed to a camera.
  */
-JitsiTrack.prototype.isScreenSharing = function(){
-
+JitsiTrack.prototype.isScreenSharing = function() {
 };
 
 /**
@@ -256,7 +255,7 @@ JitsiTrack.prototype.getId = function () {
  * @returns {boolean} whether MediaStream is active.
  */
 JitsiTrack.prototype.isActive = function () {
-    if((typeof this.stream.active !== "undefined"))
+    if(typeof this.stream.active !== "undefined")
         return this.stream.active;
     else
         return true;
@@ -286,7 +285,6 @@ JitsiTrack.prototype.off = function (eventId, handler) {
 // Common aliases for event emitter
 JitsiTrack.prototype.addEventListener = JitsiTrack.prototype.on;
 JitsiTrack.prototype.removeEventListener = JitsiTrack.prototype.off;
-
 
 /**
  * Sets the audio level for the stream
