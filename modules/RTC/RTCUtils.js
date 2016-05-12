@@ -669,31 +669,58 @@ var RTCUtils = {
     getUserMediaWithConstraints: function ( um, success_callback, failure_callback, options) {
         options = options || {};
         var resolution = options.resolution;
-        var constraints = getConstraints(um, options);
+        var constraints;
 
-        logger.info("Get media constraints", constraints);
-
-        try {
-            this.getUserMedia(constraints,
-                function (stream) {
-                    logger.log('onUserMediaSuccess');
-                    setAvailableDevices(um, true);
-                    success_callback(stream);
-                },
-                function (error) {
-                    setAvailableDevices(um, false);
-                    logger.warn('Failed to get access to local media. Error ',
-                        error, constraints);
-                    if (failure_callback) {
-                        failure_callback(error, resolution);
-                    }
-                });
-        } catch (e) {
-            logger.error('GUM failed: ', e);
-            if (failure_callback) {
-                failure_callback(e);
+        function getUM() {
+            try {
+                this.getUserMedia(constraints,
+                    function (stream) {
+                        logger.log('onUserMediaSuccess');
+                        setAvailableDevices(um, true);
+                        success_callback(stream);
+                    },
+                    function (error) {
+                        setAvailableDevices(um, false);
+                        logger.warn('Failed to get access to local media. Error ',
+                            error, constraints);
+                        if (failure_callback) {
+                            failure_callback(error, resolution);
+                        }
+                    });
+            } catch (e) {
+                logger.error('GUM failed: ', e);
+                if (failure_callback) {
+                    failure_callback(e);
+                }
             }
         }
+
+        if (RTCBrowserType.isReactNative()) {
+            MediaStreamTrack.getSources(sourceInfos => {
+                console.log(sourceInfos);
+                var videoSourceId;
+                for (var i = 0; i < sourceInfos.length; i++) {
+                  var sourceInfo = sourceInfos[i];
+                  if(sourceInfo.kind == "video" && sourceInfo.facing == "front") {
+                    videoSourceId = sourceInfo.id;
+                  }
+                }
+                constraints = {
+                    "audio": true,
+                    "video": {
+                        optional: [{sourceId: videoSourceId}]
+                    }
+                };
+
+                logger.info("Get media constraints", constraints);
+
+                getUM();
+            });
+        } else {
+            constraints = getConstraints(um, options);
+            getUM();
+        }
+
     },
 
     /**

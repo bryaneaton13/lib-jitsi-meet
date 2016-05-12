@@ -1268,7 +1268,12 @@ JingleSessionPC.prototype.remoteTrackAdded = function (stream, track) {
     var ssrclines = SDPUtil.find_lines(medialines[0], 'a=ssrc:');
     var ssrclinesOfStreamId = ssrclines.filter(function (line) {
         var msid = RTCBrowserType.isTemasysPluginUsed() ? 'mslabel' : 'msid';
-        return line.indexOf(msid + ':' + streamId) !== -1;
+        // return line.indexOf(msid + ':' + streamId) !== -1;
+        return (
+            line.indexOf(msid + ':') !== -1
+            && line.indexOf(msid + ':mixedmslabel') === -1
+            && line.indexOf(msid + ':ARDAMS') === -1
+        );
     });
     // FIXME The MediaStream implementation of the react-native-webrtc project
     // doesn't use the msid of remoteSDP as its id.

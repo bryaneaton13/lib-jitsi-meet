@@ -657,7 +657,7 @@ TraceablePeerConnection.prototype.getStats = function(callback, errback) {
         // ignore for now...
         if(!errback)
             errback = function () {};
-        this.peerconnection.getStats(null, callback, errback);
+        // this.peerconnection.getStats(null, callback, errback);
     } else {
         this.peerconnection.getStats(callback);
     }
