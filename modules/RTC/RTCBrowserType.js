@@ -182,30 +182,26 @@ function detectReactNative() {
 }
 
 function detectBrowser() {
-    currentBrowser = RTCBrowserType.RTC_BROWSER_REACT_NATIVE;
+    var version;
+    var detectors = [
+        detectReactNative,
+        detectNWJS,
+        detectOpera,
+        detectChrome,
+        detectFirefox,
+        detectIE,
+        detectSafari
+    ];
+    // Try all browser detectors
+    for (var i = 0; i < detectors.length; i++) {
+        version = detectors[i]();
+        if (version)
+            return version;
+    }
+    console.warn("Browser type defaults to Safari ver 1");
+    currentBrowser = RTCBrowserType.RTC_BROWSER_SAFARI;
     return 1;
 }
-// function detectBrowser() {
-//     var version;
-//     var detectors = [
-//         detectReactNative,
-//         detectNWJS,
-//         detectOpera,
-//         detectChrome,
-//         detectFirefox,
-//         detectIE,
-//         detectSafari
-//     ];
-//     // Try all browser detectors
-//     for (var i = 0; i < detectors.length; i++) {
-//         version = detectors[i]();
-//         if (version)
-//             return version;
-//     }
-//     console.warn("Browser type defaults to Safari ver 1");
-//     currentBrowser = RTCBrowserType.RTC_BROWSER_SAFARI;
-//     return 1;
-// }
 
 browserVersion = detectBrowser();
 isAndroid = navigator.userAgent.indexOf('Android') != -1;
