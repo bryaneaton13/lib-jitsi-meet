@@ -4,7 +4,6 @@ var logger = require("jitsi-meet-logger").getLogger(__filename);
 var RTCBrowserType = require("../RTC/RTCBrowserType.js");
 var XMPPEvents = require("../../service/xmpp/XMPPEvents");
 var transform = require('sdp-transform');
-var RandomUtil = require('../util/RandomUtil');
 
 var SIMULCAST_LAYERS = 3;
 
@@ -284,9 +283,7 @@ TraceablePeerConnection.prototype.ssrcReplacement = function (desc) {
 
         if (!Array.isArray(bLine.ssrcs) || bLine.ssrcs.length === 0)
         {
-            var ssrc = this.recvOnlySSRCs[bLine.type]
-                = this.recvOnlySSRCs[bLine.type] ||
-                    RandomUtil.randomInt(1, 0xffffffff);
+            var ssrc = this.recvOnlySSRCs[bLine.type] || (Math.floor(Math.random() * 4294967295) + 1);
             bLine.ssrcs = [{
                 id: ssrc,
                 attribute: 'cname',
@@ -671,13 +668,13 @@ TraceablePeerConnection.prototype.generateNewStreamSSRCInfo = function () {
         && this.simulcast.isSupported()) {
         var ssrcInfo = {ssrcs: [], groups: []};
         for(var i = 0; i < SIMULCAST_LAYERS; i++)
-            ssrcInfo.ssrcs.push(RandomUtil.randomInt(1, 0xffffffff));
+            ssrcInfo.ssrcs.push((Math.floor(Math.random() * 4294967295) + 1));
         ssrcInfo.groups.push({
             primarySSRC: ssrcInfo.ssrcs[0],
             group: {ssrcs: ssrcInfo.ssrcs.join(" "), semantics: "SIM"}});
         return ssrcInfo;
     } else {
-        return {ssrcs: [RandomUtil.randomInt(1, 0xffffffff)], groups: []};
+        return {ssrcs: [(Math.floor(Math.random() * 4294967295) + 1)], groups: []};
     }
 };
 

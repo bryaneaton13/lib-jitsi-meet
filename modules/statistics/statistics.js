@@ -4,24 +4,6 @@ var RTPStats = require("./RTPStatsCollector.js");
 var EventEmitter = require("events");
 var StatisticsEvents = require("../../service/statistics/Events");
 var CallStats = require("./CallStats");
-var ScriptUtil = require('../util/ScriptUtil');
-
-// Since callstats.io is a third party, we cannot guarantee the quality of
-// their service. More specifically, their server may take noticeably long
-// time to respond. Consequently, it is in our best interest (in the sense
-// that the intergration of callstats.io is pretty important to us but not
-// enough to allow it to prevent people from joining a conference) to (1)
-// start downloading their API as soon as possible and (2) do the
-// downloading asynchronously.
-function loadCallStatsAPI() {
-    ScriptUtil.loadScript(
-            'https://api.callstats.io/static/callstats.min.js',
-            /* async */ true,
-            /* prepend */ true);
-    // FIXME At the time of this writing, we hope that the callstats.io API will
-    // have loaded by the time we needed it (i.e. CallStats.init is invoked).
-}
-
 
 /**
  * Log stats via the focus once every this many milliseconds.
@@ -41,8 +23,8 @@ function Statistics(xmpp, options) {
         // callstats.io may be disabled because of globally-disallowed requests
         // to any third parties.
         && (this.options.disableThirdPartyRequests !== true);
-    if(this.callStatsIntegrationEnabled)
-        loadCallStatsAPI();
+    // if(this.callStatsIntegrationEnabled)
+    //     loadCallStatsAPI();
     this.callStats = null;
 
     /**
